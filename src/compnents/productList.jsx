@@ -17,7 +17,6 @@ function ProductList() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
-  // Reset page when search changes
   useEffect(() => {
     setCurrentPage(1);
   }, [search]);
@@ -38,59 +37,68 @@ function ProductList() {
   const getCartItem = (id) => cartItems.find((item) => item.id === id);
 
   return (
-    <div className="bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 min-h-screen py-8">
-      <div className="max-w-[1400px] mx-auto px-6">
-        {/* Product Grid */}
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 justify-items-center">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-blue-50 to-slate-100 py-14">
+      <div className="max-w-[1300px] mx-auto px-6">
+
+        {/* PRODUCT GRID */}
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-10">
           {paginatedProducts.map((product) => {
             const cartItem = getCartItem(product.id);
 
             return (
               <div
                 key={product.id}
-                className="group w-full max-w-[320px] bg-white/80 backdrop-blur-sm rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-transform duration-500 hover:-translate-y-2 border border-white/50"
+                className="
+                  relative bg-white/70 backdrop-blur-lg
+                  rounded-2xl border border-white/60
+                  shadow-md hover:shadow-2xl
+                  transition-all duration-500
+                  hover:-translate-y-3 hover:border-blue-400
+                "
               >
-                <div className="relative overflow-hidden">
+                {/* IMAGE */}
+                <div className="h-44 flex items-center justify-center p-6">
                   <img
                     src={product.image || "./download.jpg"}
                     alt={product.name}
-                    className="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="h-full object-contain"
                   />
-                  <div className="absolute top-3 right-3 bg-[#47c49c] text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg">
-                    {product.category}
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
 
-                <div className="p-5">
-                  <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2 min-h-[3.5rem]">
+                {/* CONTENT */}
+                <div className="px-6 pb-6 text-center">
+                  <h3 className="text-sm font-semibold text-gray-800 mb-2">
                     {product.name}
                   </h3>
 
-                  <p className="text-2xl font-extrabold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-4">
+                  <p className="text-sm text-gray-500 mb-4">
                     ₹{product.price.toLocaleString("en-IN")}
                   </p>
 
+                  {/* CART AREA */}
                   {cartItem ? (
-                    <div className="flex items-center justify-between bg-gray-50 rounded-2xl py-3 px-4 border border-gray-200">
+                    <div className="flex items-center justify-center gap-3 bg-white rounded-xl py-2 shadow-inner border">
+
                       <button
                         onClick={() => {
                           decreaseQty(product.id);
                           toast.info("Quantity decreased");
                         }}
-                        className="w-10 h-10 rounded-full bg-white border-2 border-[#47c49c] text-[#47c49c] hover:bg-[#47c49c] hover:text-white transition-all font-bold"
+                        className="w-8 h-8 rounded-lg border text-gray-700 hover:bg-gray-100"
                       >
                         −
                       </button>
 
-                      <span className="font-bold text-lg">{cartItem.qty}</span>
+                      <span className="font-semibold">
+                        {cartItem.qty}
+                      </span>
 
                       <button
                         onClick={() => {
                           increaseQty(product.id);
                           toast.info("Quantity increased");
                         }}
-                        className="w-10 h-10 rounded-full bg-white border-2 border-[#47c49c] text-[#47c49c] hover:bg-[#47c49c] hover:text-white transition-all font-bold"
+                        className="w-8 h-8 rounded-lg border text-gray-700 hover:bg-gray-100"
                       >
                         +
                       </button>
@@ -100,12 +108,12 @@ function ProductList() {
                           removeFromCart(product.id);
                           toast.error("Removed from cart");
                         }}
-                        className="w-10 h-10 rounded-full bg-red-500 hover:bg-red-600 transition-all flex items-center justify-center"
+                        className="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center"
                       >
                         <img
                           src={Delete}
-                          alt="Delete"
-                          className="w-5 h-5 brightness-0 invert"
+                          alt="delete"
+                          className="w-4 h-4 brightness-0 invert"
                         />
                       </button>
                     </div>
@@ -113,11 +121,17 @@ function ProductList() {
                     <button
                       onClick={() => {
                         addToCart(product);
-                        toast.success("Added to cart 🛒");
+                        toast.success("Added to cart");
                       }}
-                      className="w-full py-3.5 rounded-2xl bg-[#47c49c] text-white font-bold shadow-lg hover:scale-105 transition-transform"
+                      className="
+                        w-full py-2 rounded-lg
+                        border border-blue-500
+                        text-blue-600 font-medium
+                        hover:bg-blue-500 hover:text-white
+                        transition
+                      "
                     >
-                      Add to Cart 🛒
+                      Add to Cart
                     </button>
                   )}
                 </div>
@@ -126,25 +140,24 @@ function ProductList() {
           })}
         </div>
 
-        {/* Pagination */}
+        {/* PAGINATION */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-12 flex-wrap">
+          <div className="flex justify-center items-center gap-3 mt-16">
             <button
               onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 rounded-lg bg-white border disabled:opacity-40"
+              className="px-3 py-1 border rounded-lg bg-white"
             >
-              Prev
+              ‹
             </button>
 
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrentPage(i + 1)}
-                className={`px-4 py-2 rounded-lg font-bold border ${
+                className={`w-9 h-9 rounded-full text-sm font-semibold ${
                   currentPage === i + 1
-                    ? "bg-[#47c49c] text-white border-[#47c49c]"
-                    : "bg-white hover:bg-[#47c49c]/10"
+                    ? "bg-blue-500 text-white"
+                    : "bg-white border hover:bg-blue-100"
                 }`}
               >
                 {i + 1}
@@ -152,11 +165,12 @@ function ProductList() {
             ))}
 
             <button
-              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-              disabled={currentPage === totalPages}
-              className="px-4 py-2 rounded-lg bg-white border disabled:opacity-40"
+              onClick={() =>
+                setCurrentPage((p) => Math.min(p + 1, totalPages))
+              }
+              className="px-3 py-1 border rounded-lg bg-white"
             >
-              Next
+              ›
             </button>
           </div>
         )}

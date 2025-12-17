@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import { Link } from "react-router-dom";
+import AYCL from "../assets/AYCL.png";
 
 function Header() {
   const { cartItems, search, setSearch } = useContext(CartContext);
@@ -8,61 +9,74 @@ function Header() {
   const cartCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
 
   return (
-    <header className="sticky top-0 z-50 bg-black/95 shadow-2xl">
-      <div className="max-w-[1400px] mx-auto px-6 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo Section */}
-          <Link
-            to="/"
-            className="flex items-center gap-3 no-underline text-inherit group"
+    <header className="sticky top-4 z-50 px-4">
+      <div className="max-w-[1400px] mx-auto bg-white rounded-2xl shadow-lg px-6 py-4 flex items-center justify-between">
+
+        {/* LOGO */}
+        <Link to="/" className="flex items-center gap-3">
+          <img
+            src={AYCL}
+            alt="AsYourChoice"
+            className="w-9 h-9 object-contain"
+          />
+          <span className="text-lg font-bold text-gray-800">
+            AsYourChoice
+          </span>
+        </Link>
+
+        {/* SEARCH */}
+        <div className="relative w-[420px] hidden md:block">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value.toLowerCase())}
+            placeholder="Search"
+            className="
+              w-full py-2.5 pl-10 pr-4
+              rounded-xl border border-gray-200
+              bg-gray-50 text-sm
+              outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100
+            "
+          />
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
           >
-            <div className="w-12 h-12 bg-[#47c49c] rounded-2xl flex items-center justify-center shadow-lg shadow-[#47c49c]/20 group-hover:scale-110 group-hover:shadow-[#47c49c]/40 transition-all duration-300">
-              <span className="text-2xl">🛍️</span>
-            </div>
-            <div>
-              <h1 className="text-2xl font-extrabold text-white tracking-tight group-hover:text-[#47c49c] transition-colors duration-300">
-                ShopHub
-              </h1>
-              <p className="text-xs text-gray-400 group-hover:text-[#47c49c]/80 transition-colors duration-300">
-                Premium Shopping
-              </p>
-            </div>
-          </Link>
-
-          {/* Search and Cart Section */}
-          <div className="flex items-center gap-6">
-            {/* Search Bar */}
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <span className="text-xl">🔍</span>
-              </div>
-              <input
-                type="text"
-                value={search}
-                onChange={(e) => setSearch(e.target.value.toLowerCase())}
-                placeholder="Search products..."
-                className="py-3 pl-12 pr-4 w-80 rounded-2xl bg-[#2a2a35] border border-gray-700 text-gray-200 placeholder-gray-500 outline-none focus:border-[#47c49c] focus:ring-4 focus:ring-[#47c49c]/20 transition-all duration-300 shadow-lg"
-              />
-            </div>
-
-            {/* Cart Icon */}
-            <Link to="/cart" className="relative group">
-              <div className="w-14 h-14 bg-[#47c49c] rounded-2xl flex items-center justify-center shadow-lg shadow-[#47c49c]/20 group-hover:shadow-2xl group-hover:shadow-[#47c49c]/40 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 cursor-pointer">
-                <span className="text-3xl">🛒</span>
-              </div>
-
-              {cartCount > 0 && (
-                <div className="absolute -top-2 -right-2 bg-orange-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs font-bold shadow-lg animate-pulse border-2 border-[#1c1c22]">
-                  {cartCount}
-                </div>
-              )}
-            </Link>
-          </div>
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M21 21l-4.35-4.35m1.85-5.65a7.5 7.5 0 11-15 0 7.5 7.5 0 0115 0z"
+            />
+          </svg>
         </div>
-      </div>
 
-      {/* Bottom solid border */}
-      <div className="h-1 bg-[#47c49c]"></div>
+        {/* CART */}
+        <Link to="/cart" className="relative">
+          <svg
+            className="w-6 h-6 text-gray-700"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M9 21a1 1 0 100-2 1 1 0 000 2zm8 0a1 1 0 100-2 1 1 0 000 2z"
+            />
+          </svg>
+
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 text-white text-xs flex items-center justify-center font-bold">
+              {cartCount}
+            </span>
+          )}
+        </Link>
+
+      </div>
     </header>
   );
 }
