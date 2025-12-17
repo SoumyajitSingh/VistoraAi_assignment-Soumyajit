@@ -27,7 +27,7 @@ The project demonstrates core e-commerce functionalities such as product listing
 
 ## Project Structure
 
-bash
+```bash
 src/
 ├── assets/              # Images and icons
 ├── components/
@@ -42,7 +42,7 @@ src/
 ├── App.jsx              # Routing and layout
 ├── main.jsx             # Application entry point
 └── index.css            # Global styles
-
+```
 
 ## Application Workflow
 
